@@ -38,10 +38,6 @@ export function List({ isLegend }: { isLegend: boolean }) {
       lastPageParam + 50,
   });
 
-  if (!data) {
-    return <ActivityIndicator />;
-  }
-
   const loadNextPage = (arg: number) => {
     // This is stale on Legend List
     console.log({ isFetchingNextPage, arg, isLegend });
@@ -53,28 +49,34 @@ export function List({ isLegend }: { isLegend: boolean }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ListComponent
-        style={{ paddingHorizontal: 8, paddingVertical: 16 }}
-        data={data?.pages.map((page) => page.results).flat()}
-        estimatedItemSize={51}
-        keyExtractor={(item) => item.url}
-        onEndReached={() => loadNextPage(data.pages.length)}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              paddingVertical: 16,
-              paddingHorizontal: 32,
-              borderRadius: 10,
-              borderColor: "white",
-              borderWidth: 1,
-              marginBottom: 12,
-            }}
-          >
-            <Text style={{ color: "white" }}>{item.name}</Text>
-          </View>
-        )}
-        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
-      />
+      {!data ? (
+        <ActivityIndicator color='white' />
+      ) : (
+        <ListComponent
+          style={{ paddingHorizontal: 8, paddingVertical: 16 }}
+          data={data?.pages.map((page) => page.results).flat()}
+          estimatedItemSize={51}
+          keyExtractor={(item) => item.url}
+          onEndReached={() => loadNextPage(data.pages.length)}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                paddingVertical: 16,
+                paddingHorizontal: 32,
+                borderRadius: 10,
+                borderColor: "white",
+                borderWidth: 1,
+                marginBottom: 12,
+              }}
+            >
+              <Text style={{ color: "white" }}>{item.name}</Text>
+            </View>
+          )}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator /> : null
+          }
+        />
+      )}
     </SafeAreaView>
   );
 }
