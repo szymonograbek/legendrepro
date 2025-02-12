@@ -2,5 +2,5 @@ import React from "react";
 import { List } from "@/components/List";
 
 export default function HomeScreen() {
-  return <List isLegend />
+  return <List isLegend={false} />
 }
